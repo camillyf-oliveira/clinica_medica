@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Clínica Médica - Agendamento de Consultas</title>
+    <meta name="description" content="Protótipo de alta fidelidade do sistema de agendamento de consultas da Clínica Médica.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+<!--
+    Prototipo de alta fidelidade - Engenharia de Requisitos.
+    Cada <section class="screen"> e uma tela. A navegacao e feita em js/app.js.
+    Nenhuma regra de negocio fica neste arquivo (RNF06): as acoes sao
+    declaradas por data-acao e tratadas por delegacao de eventos.
+-->
+
+<div class="app-container" id="app">
+
+    <!-- ============================================================
+         TELA 1 - LOGIN (RF02)
+         ============================================================ -->
+    <section id="tela-login" class="screen active">
+        <div class="screen-body">
+            <div class="text-center" style="margin: 40px 0 32px;">
+                <div class="avatar avatar-lg" style="margin: 0 auto 16px;">
+                    <i data-lucide="heart-pulse" class="icon-xl"></i>
+                </div>
+                <h1 style="color: var(--secondary);">Clínica Médica</h1>
+                <p class="text-muted" style="margin-top: 8px;">Acesse sua conta para continuar</p>
+            </div>
+
+            <form id="form-login" novalidate>
+                <div class="field" data-campo="cpf">
+                    <label for="login-cpf">CPF</label>
+                    <input type="text" id="login-cpf" name="cpf" inputmode="numeric"
+                           maxlength="14" placeholder="000.000.000-00" autocomplete="username">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="senha">
+                    <label for="login-senha">Senha</label>
+                    <input type="password" id="login-senha" name="senha"
+                           placeholder="Digite sua senha" autocomplete="current-password">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <button type="submit" class="btn" data-acao="entrar">
+                    <i data-lucide="log-in" class="icon"></i>
+                    <span class="btn-label">Entrar</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </form>
+
+            <div class="text-center" style="margin-top: 16px;">
+                <button class="btn-link" data-acao="esqueci-senha">Esqueci minha senha</button>
+            </div>
+
+
+            <div class="text-center" style="margin-top: 24px; padding-top: 20px; border-top: 1px solid var(--border);">
+                <span class="text-muted">Ainda não tem cadastro?</span><br>
+                <button class="btn-link" data-acao="ir-cadastro">Criar minha conta</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         TELA 2 - CADASTRO (RF01 / RN02 / RN03)
+         ============================================================ -->
+    <section id="tela-cadastro" class="screen">
+        <header class="top-header">
+            <button class="header-back" data-acao="voltar-login" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Criar conta</h2>
+        </header>
+
+        <div class="screen-body">
+            <p class="text-muted" style="margin-bottom: 20px;">
+                Preencha seus dados para se cadastrar como paciente.
+            </p>
+
+            <form id="form-cadastro" novalidate>
+                <div class="field" data-campo="nome">
+                    <label for="cad-nome">Nome completo</label>
+                    <input type="text" id="cad-nome" name="nome" placeholder="Nome e sobrenome">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="cpf">
+                    <label for="cad-cpf">CPF</label>
+                    <input type="text" id="cad-cpf" name="cpf" inputmode="numeric"
+                           maxlength="14" placeholder="000.000.000-00">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="nascimento">
+                    <label for="cad-nascimento">Data de nascimento</label>
+                    <input type="date" id="cad-nascimento" name="nascimento">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="email">
+                    <label for="cad-email">E-mail</label>
+                    <input type="email" id="cad-email" name="email" placeholder="seu@email.com">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="telefone">
+                    <label for="cad-telefone">Telefone</label>
+                    <input type="text" id="cad-telefone" name="telefone" inputmode="tel"
+                           maxlength="15" placeholder="(00) 00000-0000">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <div class="field" data-campo="senha">
+                    <label for="cad-senha">Senha</label>
+                    <input type="password" id="cad-senha" name="senha" placeholder="Mínimo de 6 caracteres">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                    <p class="field-hint">A senha deve ter ao menos 6 caracteres.</p>
+                </div>
+
+                <div class="field" data-campo="confirmacao">
+                    <label for="cad-confirmacao">Confirmar senha</label>
+                    <input type="password" id="cad-confirmacao" name="confirmacao" placeholder="Repita a senha">
+                    <span class="field-error">
+                        <i data-lucide="alert-circle" class="icon-sm"></i>
+                        <span class="field-error-text"></span>
+                    </span>
+                </div>
+
+                <button type="submit" class="btn" data-acao="cadastrar">
+                    <i data-lucide="user-plus" class="icon"></i>
+                    <span class="btn-label">Cadastrar</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </form>
+
+            <div class="text-center" style="margin-top: 12px;">
+                <button class="btn-link" data-acao="voltar-login">Já tenho conta</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- ============================================================
+         TELA 3 - INICIO (RF10)
+         ============================================================ -->
+    <section id="tela-inicio" class="screen has-nav">
+        <header class="home-header">
+            <div class="greeting">
+                <i data-lucide="sun" class="icon-sm"></i>
+                <span id="home-saudacao">Bem-vindo</span>
+            </div>
+            <div class="user-name" id="home-nome">Paciente</div>
+        </header>
+
+        <div class="screen-body home-body">
+            <!-- RF10: proxima consulta agendada -->
+            <div id="home-proxima"></div>
+
+            <p class="section-title">O que você precisa</p>
+            <div class="grid-menu">
+                <button class="menu-card" data-acao="ir-agendar">
+                    <span class="menu-icon"><i data-lucide="calendar-plus" class="icon"></i></span>
+                    <span class="menu-title">Agendar consulta</span>
+                    <span class="menu-sub">Marque um atendimento</span>
+                </button>
+
+                <button class="menu-card" data-acao="ir-consultas">
+                    <span class="menu-icon"><i data-lucide="calendar-check" class="icon"></i></span>
+                    <span class="menu-title">Minhas consultas</span>
+                    <span class="menu-sub" id="home-contador">Ver agendamentos</span>
+                </button>
+
+                <button class="menu-card" data-acao="ir-exames">
+                    <span class="menu-icon"><i data-lucide="clipboard-list" class="icon"></i></span>
+                    <span class="menu-title">Meus exames</span>
+                    <span class="menu-sub">Resultados e status</span>
+                </button>
+
+                <button class="menu-card" data-acao="ir-perfil">
+                    <span class="menu-icon"><i data-lucide="user-round" class="icon"></i></span>
+                    <span class="menu-title">Meu perfil</span>
+                    <span class="menu-sub">Dados cadastrais</span>
+                </button>
+            </div>
+
+            <div class="card" style="margin-top: 20px;">
+                <div style="display: flex; gap: 12px; align-items: flex-start;">
+                    <span class="menu-icon"><i data-lucide="map-pin" class="icon"></i></span>
+                    <div>
+                        <h4 id="unidade-nome">Unidade</h4>
+                        <p class="text-soft" id="unidade-endereco" style="margin-top: 4px;"></p>
+                        <p class="text-soft" id="unidade-telefone" style="margin-top: 2px;"></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <nav class="bottom-nav" data-nav="inicio"></nav>
+    </section>
+
+    <!-- ============================================================
+         TELA 4 - AGENDAR CONSULTA (RF04 / RN04 / RN05 / RN07)
+         ============================================================ -->
+    <section id="tela-agendar" class="screen">
+        <header class="top-header">
+            <button class="header-back" data-acao="agendar-voltar" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Agendar consulta</h2>
+        </header>
+
+        <div class="stepper" id="agendar-stepper">
+            <div class="stepper-label">
+                <span id="stepper-passo">Passo 1 de 4</span>
+                <span id="stepper-titulo">Especialidade</span>
+            </div>
+            <div class="stepper-track">
+                <div class="stepper-fill" id="stepper-fill" style="width: 25%;"></div>
+            </div>
+        </div>
+
+        <div class="screen-body">
+            <!-- Passo 1: especialidade -->
+            <div class="step active" data-passo="1">
+                <p class="section-title">Escolha a especialidade</p>
+                <div id="lista-especialidades"></div>
+            </div>
+
+            <!-- Passo 2: medico -->
+            <div class="step" data-passo="2">
+                <p class="section-title">Escolha o profissional</p>
+                <div id="lista-medicos"></div>
+            </div>
+
+            <!-- Passo 3: data (RN04) -->
+            <div class="step" data-passo="3">
+                <p class="section-title">Escolha a data</p>
+                <div class="date-strip" id="lista-datas"></div>
+            </div>
+
+            <!-- Passo 4: horario (RN05) -->
+            <div class="step" data-passo="4">
+                <p class="section-title">Escolha o horário</p>
+                <div class="time-grid" id="lista-horarios"></div>
+                <p class="text-soft" style="margin-top: 16px;">Horários riscados não estão disponíveis.</p>
+            </div>
+
+            <!-- Passo 5: revisao e confirmacao (RN07) -->
+            <div class="step" data-passo="5">
+                <p class="section-title">Confirme os dados</p>
+                <div class="card">
+                    <dl id="revisao-dados"></dl>
+                </div>
+            </div>
+
+            <!-- Passo 6: sucesso -->
+            <div class="step" data-passo="6">
+                <div class="success-panel">
+                    <div class="success-icon"><i data-lucide="check" class="icon-xl"></i></div>
+                    <h3>Consulta agendada</h3>
+                    <p class="text-muted" style="margin-bottom: 20px;">
+                        Protocolo <strong id="sucesso-protocolo"></strong>
+                    </p>
+                    <div class="card" style="text-align: left;">
+                        <dl id="sucesso-dados"></dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <footer class="screen-footer" id="agendar-footer" hidden>
+            <button class="btn" data-acao="agendar-confirmar">
+                <i data-lucide="check-circle" class="icon"></i>
+                <span class="btn-label">Confirmar agendamento</span>
+                <span class="btn-spinner"></span>
+            </button>
+        </footer>
+
+        <footer class="screen-footer" id="sucesso-footer" hidden>
+            <div class="btn-row">
+                <button class="btn btn-ghost" data-acao="ir-inicio">
+                    <span class="btn-label">Inicio</span>
+                </button>
+                <button class="btn" data-acao="ver-consulta-criada">
+                    <span class="btn-label">Ver detalhes</span>
+                </button>
+            </div>
+        </footer>
+    </section>
+
+    <!-- ============================================================
+         TELA 5 - MINHAS CONSULTAS (RF05)
+         ============================================================ -->
+    <section id="tela-consultas" class="screen has-nav">
+        <header class="top-header">
+            <button class="header-back" data-acao="ir-inicio" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Minhas consultas</h2>
+            <button class="header-action" data-acao="ir-agendar" aria-label="Agendar consulta">
+                <i data-lucide="plus" class="icon"></i>
+            </button>
+        </header>
+
+        <div class="screen-body">
+            <div class="filter-bar" id="filtro-consultas">
+                <button class="filter-chip active" data-filtro-consulta="todas">Todas</button>
+                <button class="filter-chip" data-filtro-consulta="Agendada">Agendadas</button>
+                <button class="filter-chip" data-filtro-consulta="Realizada">Realizadas</button>
+                <button class="filter-chip" data-filtro-consulta="Cancelada">Canceladas</button>
+            </div>
+
+            <div id="lista-consultas"></div>
+        </div>
+
+        <nav class="bottom-nav" data-nav="consultas"></nav>
+    </section>
+
+    <!-- ============================================================
+         TELA 6 - DETALHES DA CONSULTA (RF06 / RF07 / RN06)
+         ============================================================ -->
+    <section id="tela-consulta-detalhe" class="screen">
+        <header class="top-header">
+            <button class="header-back" data-acao="ir-consultas" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Detalhes da consulta</h2>
+        </header>
+
+        <div class="screen-body" id="consulta-detalhe-corpo"></div>
+
+        <footer class="screen-footer" id="consulta-detalhe-rodape" hidden>
+            <button class="btn btn-danger" data-acao="abrir-modal-cancelar">
+                <i data-lucide="calendar-x" class="icon"></i>
+                <span class="btn-label">Cancelar consulta</span>
+                <span class="btn-spinner"></span>
+            </button>
+        </footer>
+    </section>
+
+    <!-- ============================================================
+         TELA 7 - MEUS EXAMES (RF08)
+         ============================================================ -->
+    <section id="tela-exames" class="screen has-nav">
+        <header class="top-header">
+            <button class="header-back" data-acao="ir-inicio" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Meus exames</h2>
+        </header>
+
+        <div class="screen-body">
+            <div class="filter-bar" id="filtro-exames">
+                <button class="filter-chip active" data-filtro-exame="todos">Todos</button>
+                <button class="filter-chip" data-filtro-exame="Pronto">Prontos</button>
+                <button class="filter-chip" data-filtro-exame="Em Análise">Em análise</button>
+            </div>
+
+            <div id="lista-exames"></div>
+        </div>
+
+        <nav class="bottom-nav" data-nav="exames"></nav>
+    </section>
+
+    <!-- ============================================================
+         TELA 8 - DETALHES DO EXAME (RF09)
+         ============================================================ -->
+    <section id="tela-exame-detalhe" class="screen">
+        <header class="top-header">
+            <button class="header-back" data-acao="ir-exames" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Detalhes do exame</h2>
+        </header>
+
+        <div class="screen-body" id="exame-detalhe-corpo"></div>
+    </section>
+
+    <!-- ============================================================
+         TELA 9 - PERFIL (RF03)
+         ============================================================ -->
+    <section id="tela-perfil" class="screen has-nav">
+        <header class="top-header">
+            <button class="header-back" data-acao="ir-inicio" aria-label="Voltar">
+                <i data-lucide="arrow-left" class="icon"></i>
+            </button>
+            <h2>Meu perfil</h2>
+        </header>
+
+        <div class="screen-body">
+            <div class="text-center" style="margin-bottom: 24px;">
+                <div class="avatar avatar-lg" id="perfil-iniciais" style="margin: 0 auto 12px;"></div>
+                <h3 id="perfil-nome"></h3>
+                <p class="text-soft" id="perfil-email"></p>
+            </div>
+
+            <div class="card">
+                <dl id="perfil-dados"></dl>
+            </div>
+
+            <div class="notice notice-info" style="margin-top: 16px;">
+                <i data-lucide="info" class="icon-sm" style="margin-top: 2px;"></i>
+                <div>A edição de dados cadastrais não faz parte do escopo deste protótipo.</div>
+            </div>
+
+            <button class="btn btn-ghost" style="margin-top: 20px;" data-acao="reiniciar-dados">
+                <i data-lucide="rotate-ccw" class="icon"></i>
+                <span class="btn-label">Restaurar dados de demonstração</span>
+                <span class="btn-spinner"></span>
+            </button>
+
+            <button class="btn btn-danger" style="margin-top: 12px;" data-acao="sair">
+                <i data-lucide="log-out" class="icon"></i>
+                <span class="btn-label">Sair da conta</span>
+                <span class="btn-spinner"></span>
+            </button>
+        </div>
+
+        <nav class="bottom-nav" data-nav="perfil"></nav>
+    </section>
+
+    <!-- ============================================================
+         Elementos globais
+         ============================================================ -->
+
+    <!-- Confirmacao de cancelamento, no lugar do confirm() do navegador -->
+    <div class="modal-overlay" id="modal-cancelar">
+        <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modal-titulo">
+            <div class="modal-icon"><i data-lucide="calendar-x" class="icon-lg"></i></div>
+            <h3 id="modal-titulo">Cancelar consulta</h3>
+            <p>Esta ação não pode ser desfeita. Deseja realmente cancelar este agendamento?</p>
+            <div class="btn-row">
+                <button class="btn btn-ghost" data-acao="fechar-modal">
+                    <span class="btn-label">Manter</span>
+                </button>
+                <button class="btn btn-danger" data-acao="confirmar-cancelamento">
+                    <span class="btn-label">Cancelar</span>
+                    <span class="btn-spinner"></span>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Indicador de carregamento entre telas e requisicoes (RNF01) -->
+    <div class="loading-overlay" id="loading" role="status" aria-live="polite">
+        <div class="spinner"></div>
+        <span class="loading-text" id="loading-texto">Carregando</span>
+    </div>
+
+    <!-- Mensagens, no lugar do alert() do navegador -->
+    <div class="toast-area" id="toasts" aria-live="polite"></div>
+
+</div>
+
+<!-- Biblioteca de icones. Para uso offline, baixe lucide.min.js
+     para js/vendor/ e troque o endereco abaixo pelo arquivo local. -->
+<script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+
+<script src="js/data.js"></script>
+<script src="js/db.js"></script>
+<script src="js/icons.js"></script>
+<script src="js/app.js"></script>
+
+</body>
+</html>

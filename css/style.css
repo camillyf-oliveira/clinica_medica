@@ -1,0 +1,1128 @@
+/*
+ * style.css - Apresentacao do prototipo.
+ *
+ * Organizacao:
+ *   1. Tokens          2. Base            3. Container
+ *   4. Tipografia      5. Botoes          6. Formularios
+ *   7. Cabecalho       8. Cartoes         9. Listas e badges
+ *  10. Agendamento    11. Navegacao      12. Carregamento
+ *  13. Toast e modal  14. Responsivo
+ */
+
+/* ------------------------------------------------------------------
+ * 1. Tokens
+ * ------------------------------------------------------------------ */
+
+:root {
+    /* Paleta herdada do prototipo original. */
+    --primary: #0097B2;
+    --primary-dark: #007F97;
+    --secondary: #005F73;
+    --primary-soft: #E3F5F8;
+
+    --bg-app: #F4F7F6;
+    --bg-page: #DDE4EA;
+    --surface: #FFFFFF;
+    --surface-alt: #F7FAFB;
+
+    --text: #1E2A32;
+    --text-muted: #6B7A85;
+    --text-soft: #94A3AC;
+    --border: #E2E8EC;
+
+    --success: #1E8E4E;
+    --success-soft: #E6F4EC;
+    --warning: #B7791F;
+    --warning-soft: #FDF3E0;
+    --danger: #C0392B;
+    --danger-soft: #FBEAE8;
+    --info: #0097B2;
+
+    /* Espacamento em multiplos de 4 px. */
+    --sp-1: 4px;
+    --sp-2: 8px;
+    --sp-3: 12px;
+    --sp-4: 16px;
+    --sp-5: 20px;
+    --sp-6: 24px;
+    --sp-8: 32px;
+
+    --radius-sm: 8px;
+    --radius: 12px;
+    --radius-lg: 16px;
+    --radius-full: 999px;
+
+    --shadow-sm: 0 1px 2px rgba(16, 38, 48, 0.06);
+    --shadow: 0 2px 8px rgba(16, 38, 48, 0.08);
+    --shadow-lg: 0 12px 32px rgba(16, 38, 48, 0.16);
+
+    --font: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    --transition: 160ms ease;
+}
+
+/* ------------------------------------------------------------------
+ * 2. Base
+ * ------------------------------------------------------------------ */
+
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html, body {
+    height: 100%;
+}
+
+body {
+    font-family: var(--font);
+    color: var(--text);
+    background: var(--bg-page);
+    background-image: radial-gradient(circle at 20% 15%, #E9EFF3 0%, var(--bg-page) 60%);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-4);
+    -webkit-font-smoothing: antialiased;
+}
+
+button, input, select, textarea {
+    font-family: inherit;
+    font-size: inherit;
+    color: inherit;
+}
+
+button { cursor: pointer; }
+
+[hidden] { display: none !important; }
+
+/* Icones da biblioteca Lucide. */
+.icon {
+    width: 20px;
+    height: 20px;
+    stroke-width: 2;
+    flex-shrink: 0;
+}
+.icon-sm { width: 16px; height: 16px; }
+.icon-lg { width: 28px; height: 28px; }
+.icon-xl { width: 40px; height: 40px; }
+
+/* ------------------------------------------------------------------
+ * 3. Container que simula a tela do celular
+ * ------------------------------------------------------------------ */
+
+.app-container {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+    height: 90vh;
+    max-height: 820px;
+    background: var(--bg-app);
+    border-radius: 28px;
+    box-shadow: var(--shadow-lg);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Cada tela e uma section; apenas a ativa aparece. */
+.screen {
+    display: none;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+}
+
+.screen.active {
+    display: flex;
+}
+
+/* Area rolavel de cada tela. */
+.screen-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: var(--sp-5);
+    -webkit-overflow-scrolling: touch;
+}
+
+/* Reserva o espaco da navegacao inferior. */
+.screen.has-nav .screen-body {
+    padding-bottom: var(--sp-4);
+}
+
+.screen-footer {
+    padding: var(--sp-4) var(--sp-5);
+    border-top: 1px solid var(--border);
+    background: var(--surface);
+}
+
+/* ------------------------------------------------------------------
+ * 4. Tipografia
+ * ------------------------------------------------------------------ */
+
+h1 { font-size: 26px; font-weight: 700; letter-spacing: -0.3px; }
+h2 { font-size: 18px; font-weight: 600; }
+h3 { font-size: 16px; font-weight: 600; }
+h4 { font-size: 15px; font-weight: 600; }
+
+.text-muted { color: var(--text-muted); font-size: 14px; }
+.text-soft  { color: var(--text-soft); font-size: 13px; }
+.text-center { text-align: center; }
+
+.section-title {
+    font-size: 13px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--text-soft);
+    margin-bottom: var(--sp-3);
+}
+
+.stack > * + * { margin-top: var(--sp-4); }
+
+/* ------------------------------------------------------------------
+ * 5. Botoes
+ * ------------------------------------------------------------------ */
+
+.btn {
+    width: 100%;
+    min-height: 48px;
+    padding: var(--sp-3) var(--sp-4);
+    border: 1px solid transparent;
+    border-radius: var(--radius-sm);
+    background: var(--primary);
+    color: #FFF;
+    font-size: 15px;
+    font-weight: 600;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-2);
+    transition: background var(--transition), transform var(--transition), opacity var(--transition);
+}
+
+.btn:hover:not(:disabled) { background: var(--primary-dark); }
+.btn:active:not(:disabled) { transform: scale(0.99); }
+
+.btn:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.btn-outline {
+    background: transparent;
+    border-color: var(--primary);
+    color: var(--primary);
+}
+.btn-outline:hover:not(:disabled) { background: var(--primary-soft); }
+
+.btn-ghost {
+    background: transparent;
+    color: var(--text-muted);
+    border-color: var(--border);
+}
+.btn-ghost:hover:not(:disabled) { background: var(--surface-alt); color: var(--text); }
+
+.btn-danger {
+    background: transparent;
+    border-color: var(--danger);
+    color: var(--danger);
+}
+.btn-danger:hover:not(:disabled) { background: var(--danger-soft); }
+
+.btn-sm {
+    width: auto;
+    min-height: 36px;
+    padding: var(--sp-2) var(--sp-3);
+    font-size: 13px;
+}
+
+.btn-link {
+    width: auto;
+    min-height: auto;
+    padding: var(--sp-2);
+    background: none;
+    border: none;
+    color: var(--primary);
+    font-weight: 600;
+    font-size: 14px;
+}
+.btn-link:hover { text-decoration: underline; }
+
+.btn-row {
+    display: flex;
+    gap: var(--sp-3);
+}
+.btn-row .btn { flex: 1; }
+
+/* Estado de carregamento do botao (RNF01). */
+.btn .btn-spinner { display: none; }
+
+.btn.is-loading .btn-label,
+.btn.is-loading .icon { display: none; }
+
+.btn.is-loading .btn-spinner {
+    display: inline-block;
+    width: 18px;
+    height: 18px;
+    border: 2px solid rgba(255, 255, 255, 0.45);
+    border-top-color: #FFF;
+    border-radius: 50%;
+    animation: girar 700ms linear infinite;
+}
+
+.btn-outline.is-loading .btn-spinner,
+.btn-ghost.is-loading .btn-spinner,
+.btn-danger.is-loading .btn-spinner {
+    border-color: rgba(0, 151, 178, 0.25);
+    border-top-color: var(--primary);
+}
+
+/* ------------------------------------------------------------------
+ * 6. Formularios
+ * ------------------------------------------------------------------ */
+
+.field { margin-bottom: var(--sp-4); }
+
+.field label {
+    display: block;
+    margin-bottom: var(--sp-2);
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.field input,
+.field select {
+    width: 100%;
+    min-height: 46px;
+    padding: var(--sp-3);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: 15px;
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.field input::placeholder { color: var(--text-soft); }
+
+.field input:focus,
+.field select:focus {
+    outline: none;
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(0, 151, 178, 0.14);
+}
+
+/* Erro exibido junto ao campo que o originou (RNF02). */
+.field-error {
+    display: none;
+    margin-top: var(--sp-2);
+    font-size: 13px;
+    color: var(--danger);
+    align-items: flex-start;
+    gap: var(--sp-1);
+}
+
+.field.has-error input,
+.field.has-error select { border-color: var(--danger); }
+
+.field.has-error .field-error { display: flex; }
+
+.field-hint {
+    margin-top: var(--sp-2);
+    font-size: 12px;
+    color: var(--text-soft);
+}
+
+/* ------------------------------------------------------------------
+ * 7. Cabecalho
+ * ------------------------------------------------------------------ */
+
+.top-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #FFF;
+    padding: var(--sp-5);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    flex-shrink: 0;
+}
+
+.top-header h2 {
+    font-size: 17px;
+    font-weight: 600;
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.header-back,
+.header-action {
+    width: 36px;
+    height: 36px;
+    border: none;
+    border-radius: var(--radius-sm);
+    background: rgba(255, 255, 255, 0.16);
+    color: #FFF;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    transition: background var(--transition);
+}
+
+.header-back:hover,
+.header-action:hover { background: rgba(255, 255, 255, 0.3); }
+
+/* Cabecalho da tela inicial, com saudacao. */
+.home-header {
+    background: linear-gradient(135deg, var(--primary) 0%, var(--secondary) 100%);
+    color: #FFF;
+    padding: var(--sp-6) var(--sp-5) var(--sp-8);
+    flex-shrink: 0;
+}
+
+.home-header .greeting {
+    font-size: 13px;
+    opacity: 0.85;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+}
+
+.home-header .user-name {
+    font-size: 22px;
+    font-weight: 700;
+    margin-top: var(--sp-1);
+}
+
+/* O corpo da home sobe sobre o cabecalho. */
+.home-body { margin-top: calc(var(--sp-6) * -1); }
+
+/* ------------------------------------------------------------------
+ * 8. Cartoes
+ * ------------------------------------------------------------------ */
+
+.card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    box-shadow: var(--shadow-sm);
+}
+
+.card + .card { margin-top: var(--sp-3); }
+
+/* Cartao de destaque da proxima consulta (RF10). */
+.highlight-card {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-left: 4px solid var(--primary);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    box-shadow: var(--shadow);
+    margin-bottom: var(--sp-5);
+}
+
+.highlight-card .highlight-label {
+    display: flex;
+    align-items: center;
+    gap: var(--sp-2);
+    font-size: 12px;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--primary);
+    margin-bottom: var(--sp-3);
+}
+
+.highlight-card .highlight-main {
+    display: block;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: var(--sp-1);
+}
+
+.highlight-card .highlight-sub {
+    display: block;
+    font-size: 14px;
+    color: var(--text-muted);
+}
+
+.highlight-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: var(--sp-3);
+    margin-top: var(--sp-3);
+    font-size: 13px;
+    color: var(--text-muted);
+}
+
+.highlight-meta span {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+}
+
+/* Menu principal da home. */
+.grid-menu {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-3);
+}
+
+.menu-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    min-height: 104px;
+    transition: transform var(--transition), box-shadow var(--transition), border-color var(--transition);
+}
+
+.menu-card:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow);
+    border-color: var(--primary);
+}
+.menu-card:active { transform: translateY(0); }
+
+/* Caixa de icone reutilizada em cartoes, listas e detalhes. */
+.menu-icon {
+    width: 38px;
+    height: 38px;
+    flex-shrink: 0;
+    align-self: flex-start;
+    border-radius: var(--radius-sm);
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.menu-card .menu-title {
+    display: block;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.menu-card .menu-sub {
+    display: block;
+    font-size: 12px;
+    color: var(--text-muted);
+    line-height: 1.35;
+}
+
+/* O rotulo ocupa a largura restante depois do icone. */
+.menu-card .menu-title,
+.menu-card .menu-sub { width: 100%; }
+
+/* Cartao clicavel de lista (consultas e exames). */
+.list-card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    box-shadow: var(--shadow-sm);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    transition: border-color var(--transition), box-shadow var(--transition);
+}
+
+.list-card + .list-card { margin-top: var(--sp-3); }
+
+.list-card:hover {
+    border-color: var(--primary);
+    box-shadow: var(--shadow);
+}
+
+.list-card .list-body { flex: 1; min-width: 0; display: block; }
+
+.list-card .list-title {
+    display: block;
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: var(--sp-1);
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.list-card .list-meta {
+    font-size: 13px;
+    color: var(--text-muted);
+    display: flex;
+    align-items: center;
+    gap: var(--sp-1);
+    margin-bottom: var(--sp-2);
+}
+
+.list-card .list-chevron { color: var(--text-soft); }
+.list-card .menu-icon { align-self: center; }
+
+/* Avatar em iniciais, no lugar de foto. */
+.avatar {
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: var(--primary-soft);
+    color: var(--secondary);
+    font-weight: 700;
+    font-size: 15px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.avatar-lg { width: 64px; height: 64px; font-size: 20px; }
+
+/* Linha rotulo/valor das telas de detalhe. */
+.detail-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: var(--sp-4);
+    padding: var(--sp-3) 0;
+    border-bottom: 1px solid var(--border);
+}
+
+.detail-row:last-child { border-bottom: none; }
+
+.detail-row dt {
+    font-size: 13px;
+    color: var(--text-muted);
+    flex-shrink: 0;
+}
+
+.detail-row dd {
+    font-size: 14px;
+    font-weight: 600;
+    text-align: right;
+}
+
+/* ------------------------------------------------------------------
+ * 9. Badges, filtros e estado vazio
+ * ------------------------------------------------------------------ */
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--sp-1);
+    padding: 4px 10px;
+    border-radius: var(--radius-full);
+    font-size: 12px;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.badge-agendada,
+.badge-pronto   { background: var(--success-soft); color: var(--success); }
+.badge-analise  { background: var(--warning-soft); color: var(--warning); }
+.badge-cancelada { background: var(--danger-soft); color: var(--danger); }
+.badge-realizada { background: #EDF1F4; color: var(--text-muted); }
+
+/* Filtros por status. */
+.filter-bar {
+    display: flex;
+    gap: var(--sp-2);
+    overflow-x: auto;
+    padding-bottom: var(--sp-3);
+    margin-bottom: var(--sp-2);
+    scrollbar-width: none;
+}
+.filter-bar::-webkit-scrollbar { display: none; }
+
+.filter-chip {
+    padding: var(--sp-2) var(--sp-4);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-full);
+    background: var(--surface);
+    color: var(--text-muted);
+    font-size: 13px;
+    font-weight: 600;
+    white-space: nowrap;
+    transition: all var(--transition);
+}
+
+.filter-chip:hover { border-color: var(--primary); color: var(--primary); }
+
+.filter-chip.active {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFF;
+}
+
+/* Estado vazio das listas (RNF02). */
+.empty-state {
+    text-align: center;
+    padding: var(--sp-8) var(--sp-5);
+    color: var(--text-muted);
+}
+
+.empty-state .empty-icon {
+    width: 64px;
+    height: 64px;
+    margin: 0 auto var(--sp-4);
+    border-radius: 50%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.empty-state .empty-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text);
+    margin-bottom: var(--sp-2);
+}
+
+.empty-state p { font-size: 14px; margin-bottom: var(--sp-4); }
+
+/* Aviso informativo (regra de negocio, exame em analise). */
+.notice {
+    display: flex;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm);
+    font-size: 13px;
+    line-height: 1.5;
+    align-items: flex-start;
+}
+
+.notice-info    { background: var(--primary-soft); color: var(--secondary); }
+.notice-warning { background: var(--warning-soft); color: var(--warning); }
+.notice-danger  { background: var(--danger-soft); color: var(--danger); }
+
+/* Tabela de resultado do exame (RF09). */
+.result-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+}
+
+.result-table th {
+    text-align: left;
+    padding: var(--sp-2);
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--text-soft);
+    border-bottom: 1px solid var(--border);
+}
+
+.result-table td {
+    padding: var(--sp-3) var(--sp-2);
+    border-bottom: 1px solid var(--border);
+}
+
+.result-table tr:last-child td { border-bottom: none; }
+.result-table .value { font-weight: 700; }
+.result-table .ref { color: var(--text-muted); font-size: 12px; }
+
+/* ------------------------------------------------------------------
+ * 10. Fluxo de agendamento
+ * ------------------------------------------------------------------ */
+
+.stepper {
+    padding: var(--sp-3) var(--sp-5);
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+}
+
+.stepper-label {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--text-muted);
+    margin-bottom: var(--sp-2);
+}
+
+.stepper-track {
+    height: 4px;
+    background: var(--border);
+    border-radius: var(--radius-full);
+    overflow: hidden;
+}
+
+.stepper-fill {
+    height: 100%;
+    background: var(--primary);
+    border-radius: var(--radius-full);
+    transition: width 300ms ease;
+}
+
+.step { display: none; }
+.step.active { display: block; }
+
+/* Opcao selecionavel (especialidade e medico). */
+.option-card {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: var(--sp-4);
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: var(--sp-3);
+    box-shadow: var(--shadow-sm);
+    transition: all var(--transition);
+}
+
+.option-card + .option-card { margin-top: var(--sp-3); }
+
+.option-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+
+.option-card.selected {
+    border-color: var(--primary);
+    background: var(--primary-soft);
+}
+
+.option-card .option-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-sm);
+    background: var(--primary-soft);
+    color: var(--primary);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.option-card.selected .option-icon { background: var(--surface); }
+
+.option-card .option-body { flex: 1; min-width: 0; display: block; }
+.option-card .option-title { display: block; font-size: 15px; font-weight: 600; }
+.option-card .option-sub { display: block; font-size: 13px; color: var(--text-muted); margin-top: 2px; }
+
+/* Faixa de datas. */
+.date-strip {
+    display: flex;
+    gap: var(--sp-2);
+    overflow-x: auto;
+    padding-bottom: var(--sp-3);
+    scrollbar-width: thin;
+}
+
+.date-chip {
+    flex-shrink: 0;
+    width: 64px;
+    padding: var(--sp-3) var(--sp-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    background: var(--surface);
+    text-align: center;
+    transition: all var(--transition);
+}
+
+.date-chip:hover { border-color: var(--primary); }
+
+.date-chip.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFF;
+}
+
+.date-chip .dow {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.4px;
+    color: var(--text-soft);
+}
+
+.date-chip .day { display: block; font-size: 20px; font-weight: 700; margin: 2px 0; }
+.date-chip .month { display: block; font-size: 11px; color: var(--text-soft); }
+
+.date-chip.selected .dow,
+.date-chip.selected .month { color: rgba(255, 255, 255, 0.85); }
+
+/* Grade de horarios. */
+.time-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: var(--sp-2);
+}
+
+.time-chip {
+    padding: var(--sp-3) var(--sp-2);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    font-size: 14px;
+    font-weight: 600;
+    transition: all var(--transition);
+}
+
+.time-chip:hover:not(:disabled) { border-color: var(--primary); color: var(--primary); }
+
+.time-chip.selected {
+    background: var(--primary);
+    border-color: var(--primary);
+    color: #FFF;
+}
+
+/* Horario ocupado - RN05. */
+.time-chip:disabled {
+    background: var(--surface-alt);
+    color: var(--text-soft);
+    text-decoration: line-through;
+    cursor: not-allowed;
+    opacity: 0.7;
+}
+
+/* Tela de sucesso do agendamento. */
+.success-panel {
+    text-align: center;
+    padding: var(--sp-6) var(--sp-4);
+}
+
+.success-panel .success-icon {
+    width: 72px;
+    height: 72px;
+    margin: 0 auto var(--sp-4);
+    border-radius: 50%;
+    background: var(--success-soft);
+    color: var(--success);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.success-panel h3 { margin-bottom: var(--sp-2); }
+
+/* ------------------------------------------------------------------
+ * 11. Navegacao inferior
+ * ------------------------------------------------------------------ */
+
+.bottom-nav {
+    display: flex;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: var(--sp-2) var(--sp-1);
+    flex-shrink: 0;
+}
+
+.nav-item {
+    flex: 1;
+    border: none;
+    background: none;
+    padding: var(--sp-2) var(--sp-1);
+    color: var(--text-soft);
+    font-size: 11px;
+    font-weight: 600;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--sp-1);
+    border-radius: var(--radius-sm);
+    transition: color var(--transition), background var(--transition);
+}
+
+.nav-item:hover { color: var(--primary); background: var(--surface-alt); }
+.nav-item.active { color: var(--primary); }
+
+/* ------------------------------------------------------------------
+ * 12. Carregamento (RNF01)
+ * ------------------------------------------------------------------ */
+
+.loading-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(244, 247, 246, 0.86);
+    backdrop-filter: blur(2px);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--sp-3);
+    z-index: 60;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 140ms ease, visibility 140ms ease;
+}
+
+.loading-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.spinner {
+    width: 38px;
+    height: 38px;
+    border: 3px solid rgba(0, 151, 178, 0.2);
+    border-top-color: var(--primary);
+    border-radius: 50%;
+    animation: girar 700ms linear infinite;
+}
+
+.loading-overlay .loading-text {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-muted);
+}
+
+@keyframes girar {
+    to { transform: rotate(360deg); }
+}
+
+/* Esqueleto usado ao carregar listas. */
+.skeleton {
+    background: linear-gradient(90deg, #EDF1F4 25%, #F6F8F9 50%, #EDF1F4 75%);
+    background-size: 200% 100%;
+    animation: brilhar 1.2s ease-in-out infinite;
+    border-radius: var(--radius-sm);
+}
+
+.skeleton-card {
+    height: 86px;
+    border-radius: var(--radius);
+    margin-bottom: var(--sp-3);
+}
+
+@keyframes brilhar {
+    from { background-position: 200% 0; }
+    to   { background-position: -200% 0; }
+}
+
+/* Respeita quem prefere menos animacao. */
+@media (prefers-reduced-motion: reduce) {
+    * { animation-duration: 0.01ms !important; transition-duration: 0.01ms !important; }
+}
+
+/* ------------------------------------------------------------------
+ * 13. Toast e modal
+ * ------------------------------------------------------------------ */
+
+.toast-area {
+    position: absolute;
+    top: var(--sp-4);
+    left: var(--sp-4);
+    right: var(--sp-4);
+    z-index: 80;
+    display: flex;
+    flex-direction: column;
+    gap: var(--sp-2);
+    pointer-events: none;
+}
+
+.toast {
+    display: flex;
+    align-items: flex-start;
+    gap: var(--sp-3);
+    padding: var(--sp-3) var(--sp-4);
+    border-radius: var(--radius-sm);
+    background: var(--surface);
+    box-shadow: var(--shadow-lg);
+    font-size: 13px;
+    line-height: 1.45;
+    border-left: 4px solid var(--primary);
+    animation: entrarToast 200ms ease;
+}
+
+.toast.saindo { animation: sairToast 200ms ease forwards; }
+
+.toast-sucesso { border-left-color: var(--success); color: var(--success); }
+.toast-erro    { border-left-color: var(--danger); color: var(--danger); }
+.toast-aviso   { border-left-color: var(--warning); color: var(--warning); }
+.toast-info    { border-left-color: var(--info); color: var(--secondary); }
+
+@keyframes entrarToast {
+    from { opacity: 0; transform: translateY(-12px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes sairToast {
+    to { opacity: 0; transform: translateY(-12px); }
+}
+
+.modal-overlay {
+    position: absolute;
+    inset: 0;
+    background: rgba(16, 38, 48, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: var(--sp-5);
+    z-index: 70;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 160ms ease, visibility 160ms ease;
+}
+
+.modal-overlay.active { opacity: 1; visibility: visible; }
+
+.modal {
+    width: 100%;
+    background: var(--surface);
+    border-radius: var(--radius-lg);
+    padding: var(--sp-5);
+    box-shadow: var(--shadow-lg);
+    transform: scale(0.96);
+    transition: transform 160ms ease;
+}
+
+.modal-overlay.active .modal { transform: scale(1); }
+
+.modal .modal-icon {
+    width: 48px;
+    height: 48px;
+    margin: 0 auto var(--sp-4);
+    border-radius: 50%;
+    background: var(--danger-soft);
+    color: var(--danger);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal h3 { text-align: center; margin-bottom: var(--sp-2); }
+.modal p { text-align: center; font-size: 14px; color: var(--text-muted); margin-bottom: var(--sp-5); }
+
+/* ------------------------------------------------------------------
+ * 14. Responsivo (RNF02)
+ * ------------------------------------------------------------------ */
+
+/* Em telas baixas o container ocupa tudo, sem moldura. */
+@media (max-height: 680px), (max-width: 430px) {
+    body { padding: 0; }
+
+    .app-container {
+        height: 100vh;
+        max-height: none;
+        border-radius: 0;
+        max-width: 100%;
+    }
+}
+
+@media (max-width: 340px) {
+    .grid-menu { grid-template-columns: 1fr; }
+    .time-grid { grid-template-columns: repeat(2, 1fr); }
+    .screen-body { padding: var(--sp-4); }
+}
+
+/* Em telas largas, mostra o container centralizado com respiro. */
+@media (min-width: 431px) and (min-height: 681px) {
+    .app-container { border: 1px solid rgba(16, 38, 48, 0.08); }
+}
