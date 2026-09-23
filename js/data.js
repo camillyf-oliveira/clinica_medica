@@ -43,7 +43,7 @@ const CATALOGO = {
     regras: {
         antecedenciaMinimaDias: 1,      // RN04
         janelaMaximaDias: 90,           // RN04
-        horasParaCancelar: 24,          // RN06
+        horasParaCancelar: 2,          // RN06
         maximoConsultasAgendadas: 3,    // RN07
         tamanhoMinimoSenha: 6,          // RN03
         minutosDeSessao: 30             // RNF05
